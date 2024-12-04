@@ -19,6 +19,7 @@ model Users{
   email String @unique
   pass String @unique
   gender Gender
+  createdGames Games[]
 }
 
 model Games{
@@ -26,6 +27,8 @@ model Games{
   name String
   description String
   type Tags
+  createdBy Users @relation(fields: [createdById], references: [id])
+  createdById String 
 }
 
 enum Gender {
@@ -53,4 +56,5 @@ WithFriends
 ScientificFiction
 
 RogueLike
+
 }

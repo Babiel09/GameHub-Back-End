@@ -2,9 +2,10 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { Insert, Delete, ShowAll, ShowOne, Update } from "../service/userService";
 import bcrypt from "bcrypt";
 import { Gender } from "@prisma/client";
+import { GeralProps } from "./gamesController";
 
 export class UserController{
-    static async get(req:FastifyRequest, reply:FastifyReply){
+    static async get(req:FastifyRequest,  reply:FastifyReply){
         const mostra = new ShowAll();
         try{
             const user = await mostra.execute();
@@ -18,7 +19,7 @@ export class UserController{
         };
     };
 
-    static async post(req:FastifyRequest, reply:FastifyReply){
+    static async post(req:FastifyRequest,  reply:FastifyReply){
         const inserir = new Insert();
         try{
             const {name, email, pass, gender} = req.body as {name:string, email:string, pass:string, gender:Gender};
@@ -55,7 +56,7 @@ export class UserController{
         };
     }
 
-    static async put(req:FastifyRequest, reply:FastifyReply){
+    static async put(req:FastifyRequest,  reply:FastifyReply){
         const autalizar = new Update();
         try{
             const {id} = req.params as {id:string};
@@ -78,7 +79,7 @@ export class UserController{
         };
     };
 
-    static async getId(req:FastifyRequest, reply:FastifyReply) {
+    static async getId(req:FastifyRequest,  reply:FastifyReply) {
         const mostraUm = new ShowOne();
         try{
             const {id} = req.params as {id:string};
@@ -97,7 +98,7 @@ export class UserController{
         };
     };
 
-    static async delete(req:FastifyRequest, reply:FastifyReply) {
+    static async delete(req:FastifyRequest,  reply:FastifyReply) {
         const deleta = new Delete();
         try{
             const {id} = req.params as {id:string};
