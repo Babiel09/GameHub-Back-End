@@ -45,6 +45,24 @@ export class ShowAll{
     };
 };
 
+export class BuscaNome{
+    async execute(name:string){
+        try{
+            const findedUserByName = await prisma.users.findFirst({
+                where:{
+                    name:name
+                }
+            });
+            if(!findedUserByName){
+                return console.log("Deu um erro absurdo, rlx e goza agora filho.");
+            };
+            return findedUserByName;
+        }catch(err){
+            throw new Error(`Error to show one values basead in the name into the DB. Error: ${err}`);
+        };
+    };
+};
+
 export class ShowOne{
     async execute(id:string){
         try{

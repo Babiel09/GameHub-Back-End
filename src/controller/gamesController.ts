@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { Insert, Delete, ShowAll, ShowOne, Update } from "../service/gamesService";
+import { Insert, Delete, ShowAll, ShowOne, Update, BuscaNome, BuscaTag } from "../service/gamesService";
 import { Tags } from "@prisma/client";
 
 export interface GeralProps {
@@ -88,6 +88,39 @@ export abstract class GamesController{
 
         }catch(err){
             return console.log(`We can't do the DELETE method!, because: ${err}`);
+        };
+    };
+
+    static async searchByName(req:FastifyRequest,  reply:FastifyReply) {
+        const buscadorPelonome = new BuscaNome();
+        try{
+            const {name} = req.query as {name:string};
+            if(!name){
+                return  reply.status(400).send({server:"You need to pass the name!"});
+            };
+            const gameName = await buscadorPelonome.execute(name);
+            if(!gameName){
+                return  reply.status(500).send({server:"Mano fudeu de verdade, fudeu muito!"});
+            };
+            reply.status(200).send(gameName);
+        }catch(err){
+            return console.log(`We can't do the SEARCH in the games!, because: ${err}`);
+        };
+    };
+    static async searchByTag(req:FastifyRequest,  reply:FastifyReply) {
+        const buscadorPelaTag = new BuscaTag(); 
+        try{
+            const {type} = req.query as {type:Tags};
+            if(!type){
+                return  reply.status(400).send({server:"You need to pass the type!"});
+            };
+            const gameTag = await buscadorPelaTag.execute(type);
+            if(!gameTag){
+                return  reply.status(500).send({server:"Mano fudeu de verdade, fudeu muito!"});
+            };
+            reply.status(200).send(gameTag);
+        }catch(err){
+            return console.log(`We can't do the SEARCH in the games!, because: ${err}`);
         };
     };
 

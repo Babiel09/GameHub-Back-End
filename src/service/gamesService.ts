@@ -24,6 +24,42 @@ export class Insert{
     };
 } ;
 
+export class BuscaNome{
+    async execute(name:string){
+        try{
+            const findedBYName = await prisma.games.findFirst({
+                where:{
+                    name:name
+                }
+            });
+            if(!findedBYName) {
+                return console.log("Mano, deu muita merda interna aqui, chama um médico!");
+            };
+            return findedBYName
+        }catch(err){
+            return console.log(`We can't show all the itens in the DB because: ${err}`);
+        };
+    };
+};
+
+export class BuscaTag{
+    async execute(type:Tags){
+        try{
+            const findedBYTag = await prisma.games.findMany({
+                where:{
+                    type:type
+                }
+            });
+            if(!findedBYTag) {
+                return console.log("Mano, deu muita merda interna aqui, chama um médico!");
+            };
+            return findedBYTag;
+        }catch(err){
+            return console.log(`We can't show all the itens in the DB because: ${err}`);
+        };
+    };
+};
+
 export class ShowAll{
     async execute(){
         try{

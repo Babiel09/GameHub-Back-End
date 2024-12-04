@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { Insert, Delete, ShowAll, ShowOne, Update } from "../service/userService";
+import { Insert, Delete, ShowAll, ShowOne, Update, BuscaNome } from "../service/userService";
 import bcrypt from "bcrypt";
 import { Gender } from "@prisma/client";
 import { GeralProps } from "./gamesController";
@@ -15,6 +15,26 @@ export class UserController{
             };
             reply.status(200).send(user);
         } catch(err){
+            return console.log(err);
+        };
+    };
+
+    static async searchByName(req:FastifyRequest,  reply:FastifyReply){
+        const buscado = new BuscaNome();
+        try{
+            const {name} = req.query as {name:string};
+
+            if(!name){
+                return reply.status(400).send({server:"You need to pass the name!"});
+            };
+
+            const userName = await buscado.execute(name);
+            if(!userName){
+                return reply.status(500).send({server:"Namo FUDEU MUITO!"});
+            };
+            reply.status(200).send(userName);
+
+        }catch(err){
             return console.log(err);
         };
     };
